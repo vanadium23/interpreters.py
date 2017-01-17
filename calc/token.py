@@ -1,6 +1,7 @@
 # coding: utf-8
 
-INTEGER, PLUS, MINUS, EOF = 'INTEGER', 'PLUS', 'MINUS', 'EOF'
+INTEGER, EOF = 'INTEGER', 'EOF'
+PLUS, MINUS, MULTIPLY, DIVISION = 'PLUS', 'MINUS', 'MULTIPLY', 'DIVISION'
 
 
 class Token(object):

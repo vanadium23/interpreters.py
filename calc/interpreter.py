@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from token import Token, EOF, INTEGER, PLUS, MINUS
+from token import Token, EOF, INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
 
 
 class Interpreter(object):
@@ -41,11 +41,19 @@ class Interpreter(object):
             return token
 
         if char == '+':
-            token = Token(PLUS, '+')
+            token = Token(PLUS, char)
             self.pos += 1
             return token
         elif char == '-':
-            token = Token(MINUS, '-')
+            token = Token(MINUS, char)
+            self.pos += 1
+            return token
+        elif char == '*':
+            token = Token(MULTIPLY, char)
+            self.pos += 1
+            return token
+        elif char == '/':
+            token = Token(DIVISION, char)
             self.pos += 1
             return token
 
@@ -64,15 +72,23 @@ class Interpreter(object):
         left = self.current_token
         self.eat(INTEGER)
 
-        # No need because only one op
-        op = self.current_token
-        self.eat(op.type)
+        result = left.value
 
-        right = self.current_token
-        self.eat(INTEGER)
+        while self.current_token.type != EOF:
+            # No need because only one op
+            op = self.current_token
+            self.eat(op.type)
 
-        if op.type == PLUS:
-            result = left.value + right.value
-        elif op.type == MINUS:
-            result = left.value - right.value
+            right = self.current_token
+            self.eat(INTEGER)
+
+            if op.type == PLUS:
+                result = result + right.value
+            elif op.type == MINUS:
+                result = result - right.value
+            elif op.type == MULTIPLY:
+                result = result * right.value
+            elif op.type == DIVISION:
+                result = result / right.value
+
         return result
