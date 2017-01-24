@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from token import Token, EOF, INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
+from tokens import Token, EOF, INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
 
 
 class Interpreter(object):
