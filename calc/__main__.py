@@ -1,5 +1,6 @@
 
 from interpreter import Interpreter
+from lexer import Lexer
 
 while True:
     try:
@@ -8,6 +9,7 @@ while True:
         break
     if not text:
         continue
-    interpreter = Interpreter(text)
+    lexer = Lexer(text)
+    interpreter = Interpreter(lexer)
     result = interpreter.expr()
     print(result)
