@@ -1,10 +1,11 @@
 # coding: utf-8
 
-from tokens import Token, EOF, INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
+from tokens import INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
 
 
 # lexer for this abstract grammar
-# expr = factor((MULTIPLY|DIVISION)factor)*
+# expr = term((PLUS|MINUS)term)*
+# term = factor((MULTIPLY|DIVISION)factor)*
 # factor = INTEGER
 
 
@@ -32,25 +33,40 @@ class Interpreter(object):
         self.eat(INTEGER)
         return token.value
 
-    def expr(self):
+    def term(self):
         left = self.factor()
 
         result = left
 
-        while self.current_token.type in (MULTIPLY, DIVISION, PLUS, MINUS):
+        while self.current_token.type in (MULTIPLY, DIVISION):
             # No need because only one op
             op = self.current_token
             self.eat(op.type)
 
             right = self.factor()
 
+            if op.type == MULTIPLY:
+                result = result * right
+            elif op.type == DIVISION:
+                result = result / right
+
+        return result
+
+    def expr(self):
+        left = self.term()
+
+        result = left
+
+        while self.current_token.type in (PLUS, MINUS):
+            # No need because only one op
+            op = self.current_token
+            self.eat(op.type)
+
+            right = self.term()
+
             if op.type == PLUS:
                 result = result + right
             elif op.type == MINUS:
                 result = result - right
-            elif op.type == MULTIPLY:
-                result = result * right
-            elif op.type == DIVISION:
-                result = result / right
 
         return result
