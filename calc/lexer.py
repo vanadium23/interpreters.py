@@ -1,6 +1,12 @@
 # coding: utf-8
 
-from tokens import Token, EOF, INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
+from tokens import (
+    Token,
+    EOF,
+    INTEGER, LPAR, RPAR,
+    PLUS, MINUS,
+    MULTIPLY, DIVISION,
+)
 
 
 class Lexer(object):
@@ -59,6 +65,14 @@ class Lexer(object):
             if self.current_char == '/':
                 self.advance()
                 return Token(DIVISION, '/')
+
+            if self.current_char == '(':
+                self.advance()
+                return Token(LPAR, '(')
+
+            if self.current_char == ')':
+                self.advance()
+                return Token(RPAR, ')')
 
             self.error()
 

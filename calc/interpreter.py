@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from tokens import INTEGER, PLUS, MINUS, MULTIPLY, DIVISION
+from tokens import INTEGER, PLUS, MINUS, MULTIPLY, DIVISION, LPAR, RPAR
 
 
 # lexer for this abstract grammar
@@ -30,8 +30,14 @@ class Interpreter(object):
 
     def factor(self):
         token = self.current_token
-        self.eat(INTEGER)
-        return token.value
+        try:
+            self.eat(INTEGER)
+            return token.value
+        except Exception:
+            self.eat(LPAR)
+            value = self.expr()
+            self.eat(RPAR)
+            return value
 
     def term(self):
         left = self.factor()
@@ -48,7 +54,7 @@ class Interpreter(object):
             if op.type == MULTIPLY:
                 result = result * right
             elif op.type == DIVISION:
-                result = result / right
+                result = result // right
 
         return result
 
